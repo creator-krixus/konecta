@@ -1,0 +1,19 @@
+# Ignorar la carpeta de node_modules
+node_modules
+npm-debug.log
+
+# Ignorar los archivos de configuración de IDE
+.vscode/
+.idea/
+
+# Ignorar los archivos de caché de sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de construcción de desarrollo
+dist/
+*.log
+
+# Ignorar archivos de entorno
+.env
+.env.local

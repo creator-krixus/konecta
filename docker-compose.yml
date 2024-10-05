@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "7000:7000"
+    environment:
+      - DATABASE_URL=${URL_DB}
+    volumes:
+      - ./backend:/app
+
+# Ejecutar el compose y forzar la recontruccion de las imagenes
+# docker-compose up --build

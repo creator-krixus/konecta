@@ -1,0 +1,17 @@
+# Ignorar archivos de configuración y sensibles
+.env
+*.local
+
+# Ignorar directorios de dependencias
+node_modules
+vendor
+
+# Ignorar archivos temporales
+*.log
+tmp/
+.cache/
+
+# Ignorar archivos de documentación y pruebas
+docs/
+tests/
+*.md

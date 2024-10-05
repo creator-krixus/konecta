@@ -1,0 +1,36 @@
+# Node modules
+node_modules/
+
+# Archivos de logs
+*.log
+
+# Archivos de entorno
+.env
+.env.local
+.env.*.local
+
+# Dependencias de producción
+package-lock.json
+
+# Archivos temporales de compilación
+dist/
+build/
+
+# Archivos de configuración del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de IDE
+.vscode/
+.idea/
+
+# Archivos de configuración de npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Otras configuraciones
+coverage/
+*.tgz
+*.zip
+
