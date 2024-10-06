@@ -255,3 +255,190 @@ module.exports = documents;
  *          404:
  *              description: User not found
  */
+
+//***************************   Productos   **************************** */
+
+//Creacion del esquema de la documentacion productos
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *      products:
+ *        type: object
+ *        properties:
+ *          imagen:
+ *              type: string
+ *              description: Imagen del producto
+ *          nombre:
+ *              type: string
+ *              description: Nombre del producto
+ *          valor:
+ *              type: number
+ *              description: Costo del producto
+ *          calificacion:
+ *              type: string
+ *              description: Calificacion del producto
+ *        required:
+ *            -imagen
+ *            -nombre
+ *            -valor
+ *            -calificacion
+ *        example:
+ *              imagen: https://example.com/image.jpg
+ *              nombre: pera
+ *              valor: 1400
+ *              calificacion: 3
+ */
+
+
+
+
+//Endpoint para crear nuevos productos
+/**
+ * @swagger
+ * /api/v1/products:
+ *  post:
+ *      summary: Create new product
+ *      tags: [products]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/products'
+ *      responses:
+ *          200:
+ *              description: New product create!
+ */
+
+// Endpoint para obtener todos los productos
+/**
+ * @swagger
+ * /api/v1/products:
+ *  get:
+ *      summary: Return all products
+ *      tags: [products]
+ *      parameters:
+ *          - name: page
+ *            in: query
+ *            required: false
+ *            description: The page number to retrieve (default is 1)
+ *            schema:
+ *              type: integer
+ *              example: 1
+ *          - name: limit
+ *            in: query
+ *            required: false
+ *            description: The number of products to retrieve per page (default is 10)
+ *            schema:
+ *              type: integer
+ *              example: 10
+ *      responses:
+ *          200:
+ *              description: A paginated list of products
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              page:
+ *                                  type: integer
+ *                                  description: The current page number
+ *                                  example: 1
+ *                              totalPages:
+ *                                  type: integer
+ *                                  description: The total number of pages available
+ *                                  example: 5
+ *                              totalProducts:
+ *                                  type: integer
+ *                                  description: The total number of products available
+ *                                  example: 49
+ *                              products:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: '#/components/schemas/products'
+ */
+
+
+
+
+//Obtener una producto mediante el id
+/**
+ * @swagger
+ * /api/v1/products/{id}:
+ *  get:
+ *      summary: Return a product for identifier unique
+ *      tags: [products]
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *              type: string
+ *          required: true
+ *          description: A product
+ *      responses:
+ *          200:
+ *              description: A product
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/products'
+ *          404:
+ *              description: Product not found
+ */
+
+//Editar la informacion de un producto
+/**
+ * @swagger
+ * /api/v1/products/{id}:
+ *  put:
+ *      summary: Update a product
+ *      tags: [products]
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *              type: string
+ *          required: true
+ *          description: Update a product
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      $ref: '#/components/schemas/products'
+ *      responses:
+ *          200:
+ *              description: update product
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/products'
+ *          404:
+ *              description: Product not found
+ */
+
+//Borra una producto
+/**
+ * @swagger
+ * /api/v1/products/{id}:
+ *  delete:
+ *      summary: Delete a product
+ *      tags: [products]
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *              type: string
+ *          required: true
+ *          description: Delete a product
+ *      responses:
+ *          200:
+ *              description: Delete product
+ *          404:
+ *              description: Product not found
+ */
