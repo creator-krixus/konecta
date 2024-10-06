@@ -119,10 +119,6 @@ controller.getAllUsers = [
     .optional()
     .isInt({ min: 1 })
     .withMessage('Page must be a positive integer'),
-  query('limit')
-    .optional()
-    .isInt({ min: 1, max: 100 })
-    .withMessage('Limit must be a positive integer between 1 and 100'),
 
   async (req, res) => {
     const errors = validationResult(req);
@@ -131,25 +127,13 @@ controller.getAllUsers = [
     }
 
     try {
-      const { page = 1, limit = 10 } = req.query;
-
-      const pageNumber = parseInt(page, 10);
-      const limitNumber = parseInt(limit, 10);
-
-      const users = await userSchema
-        .find()
-        .limit(limitNumber)
-        .skip((pageNumber - 1) * limitNumber)
-        .exec();
-
+      const users = await userSchema.find();
       const count = await userSchema.countDocuments();
 
       return res.status(200).json({
         isOk: true,
         total: count,
-        pages: Math.ceil(count / limitNumber),
-        currentPage: pageNumber,
-        users
+        users,
       });
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -157,7 +141,6 @@ controller.getAllUsers = [
     }
   }
 ];
-
 
 controller.getOneUser = [
   param('id')
