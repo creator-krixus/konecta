@@ -1,0 +1,46 @@
+.products{
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &__back{
+    margin-left: -280px;
+    text-decoration: none;
+    color: rgb(52, 47, 47);
+    font-weight: 500;
+  }
+  &__form{
+    text-align: left;
+  }
+  &__label{
+    padding-left: 8px;
+  }
+  &__input{
+    width: 100%;
+    padding: 6px;
+    margin: 5px;
+    border-radius: 6px;
+    border: 1px solid lightgray;
+    outline: none;
+  }
+  &__send{
+      margin-top: 20px;
+      margin-left: 110px;
+      font-size: 16px;
+      text-decoration: none;
+      font-weight: 400;
+      background: rgb(209, 96, 55);
+      border: 1px solid transparent;
+      color: #fff;
+      padding: 5px 12px 4px ;
+      border-radius: 12px;
+      cursor: pointer;
+      &:hover{
+        color: rgb(209, 96, 55);
+        background: #fff;
+        border: 1px solid rgb(209, 96, 55);
+        transition: all 0.5s ease-in-out;
+      }
+  }
+}
