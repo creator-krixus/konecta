@@ -3,13 +3,13 @@ import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAgdRyxdvBsk1fJ050QcsM-_vl_1PsaE44",
-  authDomain: "save-images-544a9.firebaseapp.com",
-  projectId: "save-images-544a9",
-  storageBucket: "save-images-544a9.appspot.com",
-  messagingSenderId: "339689732811",
-  appId: "1:339689732811:web:3434285dc5b59e0a83394e",
-  measurementId: "G-HL3NY8N5W1"
+  apiKey: import.meta.env.VITE_API_APIK_KEY,
+  authDomain: import.meta.env.VITE_API_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_API_PROJECTID,
+  storageBucket: import.meta.env.VITE_API_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_API_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_API_APP_ID,
+  measurementId: import.meta.env.VITE_API_MEASUREMENT_ID
 };
 
 // Inicializa la app de Firebase

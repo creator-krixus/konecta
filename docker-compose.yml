@@ -6,6 +6,16 @@ services:
       context: ./frontend
     ports:
       - "5173:5173"
+    environment:
+      - VITE_API_URL_USERS=${API_URL_USERS}
+      - VITE_API_URL_PRODUCTS=${API_URL_PRODUCTS}
+      - VITE_API_APIK_KEY=${API_APIK_KEY}
+      - VITE_API_AUTH_DOMAIN=${API_AUTH_DOMAIN}
+      - VITE_API_PROJECTID=${API_PROJECTID}
+      - VITE_API_STORAGE_BUCKET=${API_STORAGE_BUCKET}
+      - VITE_API_MESSAGING_SENDER_ID=${API_MESSAGING_SENDER_ID}
+      - VITE_API_APP_ID=${API_APP_ID}
+      - VITE_API_MEASUREMENT_ID=${API_MEASUREMENT_ID}
     depends_on:
       - backend
 
