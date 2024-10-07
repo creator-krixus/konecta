@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from '../src/context/AuthContext';
+import Login from '../src/pages/Login/Login';
+import Dashboard from '../src/pages/Dashboard/Dashborad';
+import Home from '../src/pages/Home/Home';
+import NotFound from '../src/components/NotFound';
+import CreateUser from '../src/pages/Users/CreateUser';
+import CreateProducts from './pages/Products/CreateProducts';
+import ProtectedRoute from '../src/components/ProtectedRoute';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/create-products"
+            element={
+              <ProtectedRoute allowedRoles={['administrador', 'empleado']}>
+                <CreateProducts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['administrador', 'empleado']}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          {/* Ruta protegida solo para administradores */}
+          <Route
+            path="/create-user"
+            element={
+              <ProtectedRoute allowedRoles={['administrador']}>
+                <CreateUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AuthProvider>
+    </Router>
+  );
 }
 
-export default App
+export default App;
+
+
