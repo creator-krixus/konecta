@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest'; // O 'jest' si usas Jest
+import { describe, it, expect, vi } from 'vitest'; 
 import { AuthContext } from '../../../src/context/AuthContext';
 import Login from '../../../src/pages/Login/Login';
 
 describe('Login Component', () => {
-  const mockLogin = vi.fn(); // Mock de la función `login`
-  const authState = { error: null }; // Simulación del estado de autenticación
+  const mockLogin = vi.fn(); 
+  const authState = { error: null }; 
 
   const renderComponent = () => {
     render(
