@@ -1,4 +1,3 @@
-// firebaseConfig.js
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
 
@@ -12,9 +11,7 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_API_MEASUREMENT_ID
 };
 
-// Inicializa la app de Firebase
 const app = initializeApp(firebaseConfig);
 
-// Exporta la referencia a Firebase Storage
 const storage = getStorage(app);
 export { storage };
