@@ -8,7 +8,6 @@ export const createProduct = async (productData, imageFile, authState, setAuthSt
       throw new Error('No estás autenticado. Por favor, inicia sesión.');
     }
 
-    // Subir la imagen a Firebase
     const uploadImage = async (file) => {
       const storageRef = ref(storage, `products/${file.name}`);
       const snapshot = await uploadBytes(storageRef, file);
@@ -20,7 +19,6 @@ export const createProduct = async (productData, imageFile, authState, setAuthSt
       imageUrl = await uploadImage(imageFile);
     }
 
-    // Crear el producto
     const productDataToSend = {
       ...productData,
       imagen: imageUrl,
@@ -122,7 +120,6 @@ export const editProduct = async (productId, updatedProductData, authState, setA
       throw new Error('No estás autenticado. Por favor, inicia sesión.');
     }
 
-    // Subir la imagen a Firebase si se proporciona un nuevo archivo de imagen
     let imageUrl = updatedProductData.imagen;
     const uploadImage = async (file) => {
 
@@ -156,7 +153,6 @@ export const editProduct = async (productId, updatedProductData, authState, setA
       const updatedProducts = authState.products.map(product =>
         product._id === productId ? updatedProduct : product
       );
-      // const updatedProducts = authState.products.filter(product => product._id !== id);
 
       setAuthState({ ...authState, products: updatedProducts });
 

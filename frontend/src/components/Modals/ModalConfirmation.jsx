@@ -28,7 +28,7 @@ const NotificationModal = ({ isOpen, message, duration, onClose }) => {
 NotificationModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   message: PropTypes.string.isRequired,
-  duration: PropTypes.number,  // Duración en milisegundos, si no se proporciona se quedará abierto
+  duration: PropTypes.number,
   onClose: PropTypes.func.isRequired,
 };
 

@@ -22,7 +22,7 @@ export default function NavBar() {
         <div className="navBar__close"><span className='navBar__equis' onClick={toggleMenu}>x</span></div>
         <Link to="/create-products" className='navBar__item'>Crear productos</Link>
         {role === 'administrador' &&
-          (<Link to="/create-user" className='navBar__item'>Crear usuario</Link>)}
+          (<Link to="/create-user" className='navBar__item'>Usuarios</Link>)}
         <div onClick={logOut} className='navBar__item'>Salir</div>
       </div>
     </div>
