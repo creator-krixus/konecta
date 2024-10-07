@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import './CreateUser.scss';
+import { createUser, updateUser, deleteUser, fetchUsers } from '../../context/UserService';
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +16,7 @@ const CreateUser = () => {
   const [users, setUsers] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -30,95 +34,28 @@ const CreateUser = () => {
     }
 
     if (editMode) {
-      await updateUser(userId);
+      const { success, message } = await updateUser(userId, formData);
+      setMessage(message);
+      if (success) {
+        fetchUsersData();
+        resetForm();
+      }
     } else {
-      await createUser();
-    }
-  };
-
-  const createUser = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL_USERS}/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage('Usuario creado exitosamente');
-        fetchUsers();
+      const { success, message } = await createUser(formData);
+      setMessage(message);
+      if (success) {
+        fetchUsersData();
         resetForm();
-      } else {
-        setMessage(data.message || 'Error al crear usuario');
       }
-    } catch (error) {
-      console.error('Error:', error);
-      setMessage('Error de conexión');
     }
   };
 
-  const updateUser = async (id) => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL_USERS}/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage('Usuario actualizado exitosamente');
-        fetchUsers();
-        resetForm();
-        setEditMode(false);
-        setUserId(null);
-      } else {
-        setMessage(data.message || 'Error al actualizar usuario');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setMessage('Error de conexión');
-    }
-  };
-
-  const deleteUser = async (id) => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL_USERS}/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        setMessage('Usuario eliminado exitosamente');
-        fetchUsers();
-      } else {
-        setMessage('Error al eliminar usuario');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setMessage('Error de conexión');
-    }
-  };
-
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL_USERS}`);
-      const data = await response.json();
-
-      if (response.ok) {
-        setUsers(data.users);
-      } else {
-        setMessage('Error al cargar los usuarios');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setMessage('Error de conexión al obtener usuarios');
+  const fetchUsersData = async () => {
+    const { success, users, message } = await fetchUsers();
+    if (success) {
+      setUsers(users);
+    } else {
+      setMessage(message);
     }
   };
 
@@ -134,6 +71,17 @@ const CreateUser = () => {
     setEditMode(true);
   };
 
+  const handleDelete = async (id) => {
+    const confirmation = window.confirm('¿Estás seguro de que deseas eliminar este usuario?');
+    if (confirmation) {
+      const { success, message } = await deleteUser(id);
+      setMessage(message);
+      if (success) {
+        fetchUsersData();
+      }
+    }
+  };
+
   const resetForm = () => {
     setFormData({
       nombre: '',
@@ -147,17 +95,25 @@ const CreateUser = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsersData();
   }, []);
 
+  const filteredUsers = users.filter((user) =>
+    user.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div>
-      <h2>{editMode ? 'Editar Usuario' : 'Crear Usuario'}</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className='createUsers'>
+      <Link to="/dashboard" className='createUsers__back'>
+        <p>Regresar</p>
+      </Link>
+      <h2 className='createUsers__title'>{editMode ? 'Editar Usuario' : 'Crear Usuario'}</h2>
+      <form onSubmit={handleSubmit} className='createUsers__form'>
         <div>
-          <label>Nombre:</label>
           <input
+            className='createUsers__input'
+            placeholder='Nombre'
             type="text"
             name="nombre"
             value={formData.nombre}
@@ -166,8 +122,9 @@ const CreateUser = () => {
           />
         </div>
         <div>
-          <label>Email:</label>
           <input
+            className='createUsers__input'
+            placeholder='Email'
             type="email"
             name="email"
             value={formData.email}
@@ -176,8 +133,9 @@ const CreateUser = () => {
           />
         </div>
         <div>
-          <label>Contraseña:</label>
           <input
+            className='createUsers__input'
+            placeholder='Contraseña'
             type="password"
             name="password"
             value={formData.password}
@@ -186,8 +144,9 @@ const CreateUser = () => {
           />
         </div>
         <div>
-          <label>Confirmar Contraseña:</label>
           <input
+            className='createUsers__input'
+            placeholder='Confirmar Contraseña'
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
@@ -196,47 +155,63 @@ const CreateUser = () => {
           />
         </div>
         <div>
-          <label>Rol:</label>
-          <select name="role" value={formData.role} onChange={handleChange}>
+          <select name="role" value={formData.role} onChange={handleChange} className='createUsers__selected'>
             <option value="administrador">Administrador</option>
             <option value="empleado">Empleado</option>
           </select>
         </div>
-        <button type="submit">{editMode ? 'Actualizar Usuario' : 'Crear Usuario'}</button>
-        {editMode && <button onClick={resetForm}>Cancelar</button>}
+        <button className='createUsers__send' type="submit">{editMode ? 'Actualizar Usuario' : 'Crear Usuario'}</button>
+        {editMode && <button className='createUsers__cancel' onClick={resetForm}>Cancelar</button>}
       </form>
 
-      <h2>Lista de Usuarios</h2>
-      {users.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user.nombre}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>
-                  <button onClick={() => handleEdit(user)}>Editar</button>
-                  <button onClick={() => deleteUser(user._id)}>Eliminar</button>
-                </td>
+      <h3>Lista de Usuarios</h3>
+      <input
+        className='createUsers__input'
+        type="text"
+        placeholder="Buscar por nombre o email"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
+      <div className='createUsers__tableWrapper'>
+        {filteredUsers.length > 0 ? (
+          <table className='createUsers__table'>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Acciones</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>No hay usuarios disponibles</p>
-      )}
+            </thead>
+            <tbody>
+              {filteredUsers.map((user) => (
+                <tr key={user._id}>
+                  <td>{user.nombre}</td>
+                  <td>{user.email}</td>
+                  <td>{user.role}</td>
+                  <td>
+                    <button className='createUsers__btn' onClick={() => handleEdit(user)}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: 'rgba(52, 47, 47)' }}>
+                        <path d="m16 2.012 3 3L16.713 7.3l-3-3zM4 14v3h3l8.299-8.287-3-3zm0 6h16v2H4z"></path>
+                      </svg>
+                    </button>
+                    <button className='createUsers__btn' onClick={() => handleDelete(user._id)}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: 'rgba(52, 47, 47)' }}>
+                        <path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm10.618-3L15 2H9L7.382 4H3v2h18V4z"></path>
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No hay usuarios disponibles</p>
+        )}
+      </div>
     </div>
   );
 };
 
 export default CreateUser;
-
