@@ -1,4 +1,4 @@
-# App para creacion de productos usuarios
+# App para creacion de usuarios y productos
 
 Pequeño proyecto para la creación de usuarios (empleados y administradores) con funciones específicas. Los administradores pueden crear, editar, eliminar y ver la lista completa de usuarios, mientras que los empleados solo pueden acceder a la aplicación para ver y crear productos. Los administradores, por su parte, pueden crear, listar, editar y eliminar productos.
 
