@@ -57,3 +57,7 @@ Pequeño proyecto para la creación de usuarios (empleados y administradores) co
 8. **Construye y ejecuta los contenedores con Docker Compose**
    ```bash
    docker-compose up --build
+
+9. **Ingresar con este usuario para poder crear usuarios**
+   Email: email@gmail.com
+   Contraseña: Halo1  
