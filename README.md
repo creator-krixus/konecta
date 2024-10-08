@@ -61,4 +61,7 @@ Pequeño proyecto para la creación de usuarios (empleados y administradores) co
 9. **Ingresar con este usuario para poder crear usuarios**
    ```bash
    Email: email@gmail.com
-   Contraseña: Halo1  
+   Contraseña: Halo1
+10. **Documentacion endpoints backend**
+     ```bash
+     http://localhost:7000/api/v1/docs/users  
