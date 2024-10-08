@@ -21,7 +21,8 @@ Pequeño proyecto para la creación de usuarios (empleados y administradores) co
    ```bash
    git clone https://github.com/creator-krixus/konecta.git
 2. cd konecta
-3. En la carpeta raíz, incluye este archivo .env:
+3. **En la carpeta raíz, incluye este archivo .env:**
+   ```bash
     URL_DB=mongodb+srv://wilson:Prueba123@cluster0.gzmra.mongodb.net/konecta?retryWrites=true&w=majority&appName=Cluster0
     API_URL_USERS=http://localhost:7000/api/v1/users
     API_URL_PRODUCTS=http://localhost:7000/api/v1/products
