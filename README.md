@@ -59,5 +59,6 @@ Pequeño proyecto para la creación de usuarios (empleados y administradores) co
    docker-compose up --build
 
 9. **Ingresar con este usuario para poder crear usuarios**
+   ```bash
    Email: email@gmail.com
    Contraseña: Halo1  
