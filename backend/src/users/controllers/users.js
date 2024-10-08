@@ -189,15 +189,18 @@ controller.updateUser = [
       return true;
     }),
 
-  body()
-    .notEmpty()
-    .withMessage('No data provided for update')
-    .custom((value) => {
-      if (value.nombre && typeof value.nombre !== 'string') {
-        throw new Error('Nombre must be a string');
-      }
-      if (value.email && !/\S+@\S+\.\S+/.test(value.email)) {
-        throw new Error('Email is not valid');
+  body('nombre').optional().isString().withMessage('Nombre must be a string'),
+  body('email').optional().isEmail().withMessage('Email is not valid'),
+  body('role').optional().isString().withMessage('Role must be a string'),
+  body('password')
+    .optional()
+    .isLength({ min: 5 })
+    .withMessage('Password must be at least 6 characters'),
+  body('confirmPassword')
+    .optional()
+    .custom((value, { req }) => {
+      if (req.body.password && value !== req.body.password) {
+        throw new Error('Passwords do not match');
       }
       return true;
     }),
@@ -210,7 +213,21 @@ controller.updateUser = [
 
     try {
       const { id } = req.params;
-      const updateData = req.body;
+      const { nombre, email, role, password, confirmPassword } = req.body;
+
+      if (password && confirmPassword && password !== confirmPassword) {
+        return res.status(400).json({ isOk: false, msg: 'Passwords do not match' });
+      }
+
+      const updateData = {};
+
+      if (nombre) updateData.nombre = nombre;
+      if (email) updateData.email = email;
+      if (role) updateData.role = role;
+
+      if (password) {
+        updateData.password = await bcrypt.hash(password, roundSalt);
+      }
 
       const updatedUser = await userSchema.findByIdAndUpdate(
         id,
@@ -225,7 +242,11 @@ controller.updateUser = [
       return res.status(200).json({
         isOk: true,
         msg: 'User updated successfully',
-        user: updatedUser
+        user: {
+          nombre: updatedUser.nombre,
+          email: updatedUser.email,
+          role: updatedUser.role
+        }
       });
 
     } catch (error) {
