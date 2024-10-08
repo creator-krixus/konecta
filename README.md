@@ -55,7 +55,7 @@ Pequeño proyecto para la creación de usuarios (empleados y administradores) co
    SIGNATURE=23
 
 8. **Construye y ejecuta los contenedores con Docker Compose**
-    v```bash
+   ```bash
    docker-compose up --build
     
 
